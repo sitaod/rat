@@ -75,11 +75,11 @@
     }
 
     .brand-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: linear-gradient(45deg, var(--teal), var(--orange));
-      box-shadow: 0 0 0 5px rgba(13, 148, 136, 0.12);
+      width: 45px;
+      height: 45px;
+      border-radius: 6px;
+      object-fit: contain;
+      display: inline-block;
     }
 
     .nav {
@@ -273,6 +273,23 @@
       display: block;
     }
 
+    .framework-diagram {
+      margin-top: 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(16, 35, 63, 0.08);
+    }
+
+    .framework-diagram img {
+      width: 100%;
+      height: auto;
+      max-height: 620px;
+      object-fit: contain;
+      display: block;
+    }
+
     .section {
       margin-top: 1rem;
       border: 1px solid var(--line);
@@ -348,6 +365,20 @@
       font-family: "JetBrains Mono", monospace;
       color: #1a4f57;
       overflow-x: auto;
+    }
+
+    pre {
+      margin-top: 0.62rem;
+      border: 1px solid #d7e2f2;
+      border-radius: 10px;
+      background: #edf4ff;
+      padding: 0.72rem 0.8rem;
+      overflow-x: auto;
+    }
+
+    pre code {
+      font-family: "JetBrains Mono", monospace;
+      color: #1f365d;
     }
 
     .table-wrap {
@@ -463,7 +494,7 @@
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="#overview">
-        <span class="brand-dot" aria-hidden="true"></span>
+        <img class="brand-dot" src="image/RAT_logo.png" alt="" aria-hidden="true">
         <span>RAT / RunAnyThing</span>
       </a>
       <nav class="nav" aria-label="Section navigation">
@@ -511,18 +542,11 @@
       </div>
     </section>
 
-    <div class="overview-video reveal" aria-label="RAT demo video">
-      <div class="hero-video">
-        <video controls playsinline preload="metadata" src="video/rat.mp4"></video>
-      </div>
-    </div>
-
     <section class="section reveal" id="framework">
-      <h2>Framework Modules</h2>
-      <p>
-        The architecture follows the paper's modular design: language abstraction, semantic image retrieval,
-        planning, specialized tools, sandbox generation, and long-term expertise accumulation.
-      </p>
+      <h2>Framework</h2>
+      <div class="framework-diagram" aria-label="RAT framework diagram PDF">
+        <img src="image/RAT.png" alt="RAT framework overview">
+      </div>
       <div class="cards-3">
         <article class="card">
           <h3>Language-Agnostic Abstraction</h3>
@@ -550,6 +574,12 @@
         </article>
       </div>
     </section>
+
+    <div class="overview-video reveal" aria-label="RAT demo video">
+      <div class="hero-video">
+        <video controls playsinline preload="metadata" src="video/rat.mp4"></video>
+      </div>
+    </div>
 
     <section class="section reveal" id="ratbench">
       <h2>RATBench</h2>
@@ -627,10 +657,13 @@
     <section class="section reveal" id="experiments">
       <h2>Experiments</h2>
       <p>
-        The paper defines ESSR with scenario-specific handling. For Python, it refines the metric to account for pre-existing repository issues.
+        We define ESSR with scenario-specific handling. For Python, it refines the metric to account for pre-existing repository issues.
       </p>
       <div class="formula">Python: ESSR = N_pass / N_verified</div>
       <div class="formula">General form: ESSR = N_pass / N</div>
+      <p class="note">
+        Here, N_pass is the number of tests that pass in the configured environment; N is the total number of repository tests; and N_verified is the subset of tests verified as inherently valid (excluding pre-existing broken tests).
+      </p>
       <ul>
         <li><strong>S1 (Artifact-guided):</strong> unit tests + functional containerization artifacts.</li>
         <li><strong>S2 (Artifact-free):</strong> unit tests but no containerization scripts; excludes inherently broken tests from N_verified.</li>
@@ -641,18 +674,7 @@
       </p>
 
       <h3 style="margin-top:1rem;font-family:Sora,sans-serif;">Results</h3>
-      <div class="cards-2">
-        <article class="card">
-          <h3>Main benchmark</h3>
-          <p>RAT reaches 63.2% ESSR on Python and outperforms all reported baselines across language columns.</p>
-        </article>
-        <article class="card">
-          <h3>Backbone scaling</h3>
-          <p>RAT scales from weaker backbones to stronger ones, reaching 86.8% ESSR with GPT-5.2 on the stronger-backbone subset.</p>
-        </article>
-      </div>
-
-      <h3 style="margin-top:1rem;font-family:Sora,sans-serif;">Table 2: ESSR across languages</h3>
+      <h4 style="margin-top:1rem;font-family:Sora,sans-serif;">ESSR across languages</h4>
       <div class="table-wrap">
         <table>
           <thead>
@@ -717,13 +739,16 @@
           </tbody>
         </table>
       </div>
+      <p class="note">
+        RAT consistently outperforms baseline methods across languages. On Python, RAT reaches 63.2% ESSR (vs. 35.8% for pipreqs), and shows a 29.6% average gain over SWE-agent across evaluated language columns.
+      </p>
 
-      <h3 style="margin-top:1rem;font-family:Sora,sans-serif;">Table 3: Python scenarios</h3>
+      <h4 style="margin-top:1rem;font-family:Sora,sans-serif;">Performance across different scenarios</h4>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Scenario</th>
+              <th>Levels</th>
               <th class="num">ESSR (%)</th>
               <th class="num">Tokens (K)</th>
               <th class="num">Latency (min)</th>
@@ -742,7 +767,7 @@
               <td class="num">455.2</td>
               <td class="num">59.4</td>
             </tr>
-            <tr class="highlight">
+            <tr>
               <td>S3</td>
               <td class="num">92.0</td>
               <td class="num">122.2</td>
@@ -751,138 +776,15 @@
           </tbody>
         </table>
       </div>
+      <p class="note">
+        Strong S2 performance indicates RAT can leverage project files and documentation even without containerization scripts. S3 results show RAT can infer entry points and build effective smoke tests in underspecified settings.
+      </p>
+    </section>
 
-      <h3 style="margin-top:1rem;font-family:Sora,sans-serif;">Table 4: Ablation (Python)</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Variant</th>
-              <th class="num">ESSR (%)</th>
-              <th class="num">Tokens (K)</th>
-              <th class="num">Latency (min)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>RAT w/o init</td>
-              <td class="num">40.5</td>
-              <td class="num">180.8</td>
-              <td class="num">18.3</td>
-            </tr>
-            <tr>
-              <td>RAT w/o tool</td>
-              <td class="num">55.7</td>
-              <td class="num">351.2</td>
-              <td class="num">36.9</td>
-            </tr>
-            <tr>
-              <td>RAT-auto</td>
-              <td class="num">40.5</td>
-              <td class="num">752.6</td>
-              <td class="num">39.0</td>
-            </tr>
-            <tr class="highlight">
-              <td>RAT</td>
-              <td class="num">63.2</td>
-              <td class="num">421.9</td>
-              <td class="num">24.3</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 style="margin-top:1rem;font-family:Sora,sans-serif;">Table 5: Backbone comparison</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Group</th>
-              <th>Framework</th>
-              <th>LLM</th>
-              <th class="num">ESSR (%)</th>
-              <th class="num">Tokens (K)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="group"><td colspan="5">Weaker backbones (150 Python repos)</td></tr>
-            <tr>
-              <td>Weaker</td>
-              <td>Repo2Run</td>
-              <td>DeepSeek-V3</td>
-              <td class="num">44.8</td>
-              <td class="num">~400</td>
-            </tr>
-            <tr>
-              <td>Weaker</td>
-              <td>RAT</td>
-              <td>Qwen3-Coder-30B</td>
-              <td class="num">47.2</td>
-              <td class="num">355.6</td>
-            </tr>
-            <tr>
-              <td>Weaker</td>
-              <td>RAT</td>
-              <td>DeepSeek-V3</td>
-              <td class="num">63.2</td>
-              <td class="num">421.9</td>
-            </tr>
-            <tr class="group"><td colspan="5">Stronger backbones (30 Python repos subset)</td></tr>
-            <tr>
-              <td>Stronger</td>
-              <td>RAT</td>
-              <td>DeepSeek-V3</td>
-              <td class="num">76.6</td>
-              <td class="num">351.6</td>
-            </tr>
-            <tr>
-              <td>Stronger</td>
-              <td>RAT</td>
-              <td>Claude Sonnet 4.5</td>
-              <td class="num">81.3</td>
-              <td class="num">275.1</td>
-            </tr>
-            <tr class="highlight">
-              <td>Stronger</td>
-              <td>RAT</td>
-              <td>GPT-5.2</td>
-              <td class="num">86.8</td>
-              <td class="num">280.2</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 style="margin-top:1rem;font-family:Sora,sans-serif;">Table 6: Human comparison</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Role</th>
-              <th class="num">ESSR (%)</th>
-              <th class="num">Latency (min)</th>
-              <th class="num">Difficulty</th>
-              <th class="num">Effort</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Engineers</td>
-              <td class="num">89.41</td>
-              <td class="num">13.73</td>
-              <td class="num">2.9 / 5.0</td>
-              <td class="num">3.3 / 5.0</td>
-            </tr>
-            <tr class="highlight">
-              <td>RAT</td>
-              <td class="num">91.52</td>
-              <td class="num">31.26</td>
-              <td class="num">/</td>
-              <td class="num">/</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <section class="section reveal" id="citation">
+      <h2>Citation</h2>
+      <p>If you find RAT useful, please site:</p>
+      <pre><code>@article{placeholder, not uploaded yet}</code></pre>
     </section>
 
     <footer>
