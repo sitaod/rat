@@ -603,8 +603,8 @@
           <tbody>
             <tr class="highlight">
               <td>RATBench</td>
-              <td class="num">2,000+</td>
-              <td>P, J, R, JS/TS</td>
+              <td class="num">2,500+</td>
+              <td>P, J, R, JS/TS, G</td>
               <td>Yes</td>
               <td>Yes</td>
               <td>Yes</td>
@@ -650,7 +650,7 @@
         </table>
       </div>
       <p class="note">
-        P: Python, J: Java, K: Kotlin, R: Rust, JS/TS: JavaScript/TypeScript.
+        P: Python, J: Java, K: Kotlin, R: Rust, JS/TS: JavaScript/TypeScript, G: Go.
       </p>
     </section>
 
@@ -670,7 +670,7 @@
         <li><strong>S3 (Test-deficient):</strong> no tests and no scripts; verifies via runnable entry points or synthesized smoke tests.</li>
       </ul>
       <p class="note">
-        For Java / Rust / JS/TS, success is defined by deterministic build/installation command completion without errors.
+        For Java / Rust / Go / JS/TS, success is defined by deterministic build/installation command completion without errors.
       </p>
 
       <h3 style="margin-top:1rem;font-family:Sora,sans-serif;">Results</h3>
@@ -685,6 +685,7 @@
               <th class="num">Java</th>
               <th class="num">Rust</th>
               <th class="num">JS/TS</th>
+              <th class="num">Go</th>
             </tr>
           </thead>
           <tbody>
@@ -692,6 +693,7 @@
               <td>pipreqs</td>
               <td>None</td>
               <td class="num">35.8</td>
+              <td class="num">/</td>
               <td class="num">/</td>
               <td class="num">/</td>
               <td class="num">/</td>
@@ -703,6 +705,7 @@
               <td class="num">0.0</td>
               <td class="num">0.0</td>
               <td class="num">7.3</td>
+              <td class="num">0.0</td>
             </tr>
             <tr>
               <td>SWE-agent</td>
@@ -711,11 +714,13 @@
               <td class="num">29.3</td>
               <td class="num">56.7</td>
               <td class="num">51.8</td>
+              <td class="num">9.7</td>
             </tr>
             <tr>
               <td>Installamatic</td>
               <td>DeepSeek-V3</td>
               <td class="num">6.7</td>
+              <td class="num">/</td>
               <td class="num">/</td>
               <td class="num">/</td>
               <td class="num">/</td>
@@ -727,6 +732,7 @@
               <td class="num">/</td>
               <td class="num">/</td>
               <td class="num">/</td>
+              <td class="num">/</td>
             </tr>
             <tr class="highlight">
               <td>RAT</td>
@@ -735,49 +741,48 @@
               <td class="num">41.3</td>
               <td class="num">98.7</td>
               <td class="num">68.7</td>
+              <td class="num">71.7</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p class="note">
-        RAT consistently outperforms baseline methods across languages. On Python, RAT reaches 63.2% ESSR (vs. 35.8% for pipreqs), and shows a 29.6% average gain over SWE-agent across evaluated language columns.
+        ESSR is reported in percent; / denotes not applicable. RAT reaches 63.2% ESSR on Python (vs. 35.8% for pipreqs) and 71.7% on Go, with an average gain of 36.1 percentage points over SWE-agent across the five evaluated language groups.
       </p>
 
       <h4 style="margin-top:1rem;font-family:Sora,sans-serif;">Performance across different scenarios</h4>
+      <p class="note">ESSR (%) on Python repositories from RATBench using DeepSeek-V3.</p>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Levels</th>
-              <th class="num">ESSR (%)</th>
-              <th class="num">Tokens (K)</th>
-              <th class="num">Latency (min)</th>
+              <th>Framework</th>
+              <th class="num">S1</th>
+              <th class="num">S2</th>
+              <th class="num">S3</th>
+              <th class="num">Avg.</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>S1</td>
+              <td>Repo2Run</td>
+              <td class="num">39.8</td>
+              <td class="num">25.4</td>
+              <td class="num">3.0</td>
+              <td class="num">22.7</td>
+            </tr>
+            <tr class="highlight">
+              <td>RAT</td>
               <td class="num">50.5</td>
-              <td class="num">451.3</td>
-              <td class="num">41.6</td>
-            </tr>
-            <tr>
-              <td>S2</td>
               <td class="num">69.5</td>
-              <td class="num">455.2</td>
-              <td class="num">59.4</td>
-            </tr>
-            <tr>
-              <td>S3</td>
               <td class="num">92.0</td>
-              <td class="num">122.2</td>
-              <td class="num">14.4</td>
+              <td class="num">70.7</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p class="note">
-        Strong S2 performance indicates RAT can leverage project files and documentation even without containerization scripts. S3 results show RAT can infer entry points and build effective smoke tests in underspecified settings.
+        Strong S2 performance indicates RAT can leverage project files and documentation even without containerization scripts. S3 results show RAT can infer entry points and build effective smoke tests in underspecified settings, outperforming Repo2Run across all three scenarios.
       </p>
     </section>
 
